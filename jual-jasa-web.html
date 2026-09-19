@@ -1,0 +1,646 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+  <meta charset="utf-8" />
+  <title>Serah Terima & Invoice Resmi - Website Portal KATARNOLIMA</title>
+  <meta name="description" content="Portal Resmi Karang Taruna RW 05 Poncol Jaya - Invoice & Serah Terima Proyek">
+  <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1" />
+  <link rel="icon" type="image/jpeg" href="https://arjuna119232.github.io/katarnolima/img/logo-resmi-karang-taruna.jpg"> 
+  
+  <!-- Google Fonts & Icons -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  
+  <!-- External Libraries -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+
+  <style>
+    :root {
+      --bg-dark: #090d16;
+      --card-bg: rgba(17, 24, 39, 0.88);
+      --card-border: rgba(255, 255, 255, 0.12);
+      --primary: #fbbf24;
+      --primary-glow: rgba(251, 191, 36, 0.25);
+      --accent: #10b981;
+      --danger: #ef4444;
+      --text-main: #f8fafc;
+      --text-muted: #94a3b8;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+    }
+
+    body {
+      background-color: var(--bg-dark);
+      color: var(--text-main);
+      overflow: hidden;
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background-image: 
+        radial-gradient(circle at 15% 15%, rgba(251, 191, 36, 0.08) 0%, transparent 45%),
+        radial-gradient(circle at 85% 85%, rgba(16, 185, 129, 0.08) 0%, transparent 45%);
+    }
+
+    /* Welcome Overlay */
+    .overlay {
+      position: fixed;
+      inset: 0;
+      z-index: 99;
+      background: rgba(9, 13, 22, 0.96);
+      backdrop-filter: blur(16px);
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      transition: opacity 0.5s ease, visibility 0.5s ease;
+      padding: 20px;
+      text-align: center;
+    }
+
+    /* Envelope Letter Styling */
+    .envelope-box {
+      width: 100px;
+      height: 100px;
+      border-radius: 24px;
+      background: linear-gradient(135deg, rgba(251, 191, 36, 0.15), rgba(217, 119, 6, 0.25));
+      border: 2px solid var(--primary);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      box-shadow: 0 0 35px var(--primary-glow);
+      cursor: pointer;
+      animation: bounce 2s infinite;
+      transition: transform 0.3s ease;
+    }
+
+    .envelope-box:hover {
+      transform: scale(1.1);
+    }
+
+    .envelope-box i {
+      font-size: 44px;
+      color: var(--primary);
+      filter: drop-shadow(0 4px 8px rgba(0,0,0,0.4));
+    }
+
+    .overlay h3 {
+      margin-top: 24px;
+      font-size: 19px;
+      font-weight: 800;
+      color: var(--text-main);
+      letter-spacing: 0.3px;
+    }
+
+    .overlay p {
+      margin-top: 8px;
+      font-size: 13px;
+      color: var(--text-muted);
+      max-width: 300px;
+      line-height: 1.5;
+    }
+
+    .click-hint {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      margin-top: 16px;
+      padding: 6px 14px;
+      background: rgba(251, 191, 36, 0.1);
+      border: 1px solid rgba(251, 191, 36, 0.3);
+      border-radius: 999px;
+      color: var(--primary);
+      font-size: 11px;
+      font-weight: 700;
+    }
+
+    /* Swiper Presentation Container */
+    .swiper {
+      width: 90%;
+      max-width: 440px;
+      height: 620px;
+      border-radius: 28px;
+      background: var(--card-bg);
+      backdrop-filter: blur(20px);
+      border: 1px solid var(--card-border);
+      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.65);
+    }
+
+    .swiper-slide {
+      padding: 24px 20px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: space-between;
+      text-align: center;
+    }
+
+    /* Header Components */
+    .slide-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 5px 12px;
+      border-radius: 999px;
+      background: rgba(251, 191, 36, 0.1);
+      border: 1px solid rgba(251, 191, 36, 0.25);
+      color: var(--primary);
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+      margin-bottom: 8px;
+    }
+
+    .badge-dot {
+      width: 6px;
+      height: 6px;
+      background: var(--accent);
+      border-radius: 50%;
+      box-shadow: 0 0 8px var(--accent);
+    }
+
+    .slide-title {
+      font-size: 18px;
+      font-weight: 800;
+      line-height: 1.35;
+      color: #fff;
+      margin-bottom: 4px;
+    }
+
+    .slide-sub {
+      font-size: 12px;
+      color: var(--text-muted);
+      font-weight: 400;
+      line-height: 1.45;
+    }
+
+    /* Foto Pembuat Web */
+    .dev-photo-wrap {
+      width: 100%;
+      max-width: 150px;
+      height: 150px;
+      border-radius: 18px;
+      overflow: hidden;
+      border: 2px solid var(--primary);
+      box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+      margin: 6px 0;
+    }
+
+    .dev-photo-wrap img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    /* Timeline Box Design */
+    .timeline-container {
+      width: 100%;
+      text-align: left;
+      margin: 8px 0;
+      padding-left: 10px;
+      border-left: 2px solid rgba(251, 191, 36, 0.3);
+    }
+
+    .timeline-item {
+      position: relative;
+      margin-bottom: 10px;
+      padding-left: 12px;
+    }
+
+    .timeline-item:last-child {
+      margin-bottom: 0;
+    }
+
+    .timeline-item::before {
+      content: '';
+      position: absolute;
+      left: -16px;
+      top: 4px;
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--primary);
+      box-shadow: 0 0 8px var(--primary);
+    }
+
+    .timeline-date {
+      font-size: 10px;
+      font-weight: 700;
+      color: var(--primary);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .timeline-title {
+      font-size: 12px;
+      font-weight: 700;
+      color: #fff;
+      margin: 1px 0;
+    }
+
+    .timeline-desc {
+      font-size: 11px;
+      color: var(--text-muted);
+      line-height: 1.35;
+    }
+
+    /* Corporate Feature List & Invoice Box */
+    .info-box {
+      width: 100%;
+      background: rgba(15, 23, 42, 0.7);
+      border: 1px solid var(--card-border);
+      border-radius: 16px;
+      padding: 10px 14px;
+      margin: 4px 0;
+      text-align: left;
+    }
+
+    .info-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 12px;
+      padding: 4px 0;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    }
+
+    .info-row:last-child {
+      border-bottom: none;
+    }
+
+    .info-row .label {
+      color: var(--text-muted);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .info-row .val {
+      font-weight: 600;
+      color: var(--text-main);
+    }
+
+    .info-row.total {
+      margin-top: 4px;
+      padding-top: 6px;
+      border-top: 1px dashed var(--card-border);
+      font-weight: 800;
+      font-size: 14px;
+    }
+
+    .info-row.total .val {
+      color: var(--primary);
+    }
+
+    /* Target & Terms Box */
+    .terms-box {
+      width: 100%;
+      background: rgba(239, 68, 68, 0.08);
+      border: 1px dashed rgba(239, 68, 68, 0.3);
+      border-radius: 12px;
+      padding: 8px 12px;
+      margin: 4px 0;
+      text-align: left;
+    }
+
+    .terms-box h4 {
+      color: var(--danger);
+      font-size: 11px;
+      font-weight: 800;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      margin-bottom: 2px;
+    }
+
+    .terms-box p {
+      font-size: 10px;
+      color: #cbd5e1;
+      line-height: 1.35;
+    }
+
+    /* Payment Container Grid (BCA & QRIS) */
+    .payment-grid {
+      width: 100%;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+      margin: 4px 0;
+    }
+
+    .payment-card {
+      background: linear-gradient(135deg, rgba(30, 41, 59, 0.9), rgba(15, 23, 42, 0.9));
+      border: 1px solid var(--primary);
+      border-radius: 12px;
+      padding: 8px 10px;
+      text-align: left;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .payment-title {
+      font-weight: 800;
+      color: var(--primary);
+      font-size: 11px;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .payment-val {
+      font-family: monospace;
+      font-size: 13px;
+      font-weight: 700;
+      color: #fff;
+      margin: 4px 0 2px 0;
+    }
+
+    .payment-sub {
+      font-size: 9px;
+      color: var(--text-muted);
+    }
+
+    .btn-small {
+      background: rgba(251, 191, 36, 0.15);
+      border: 1px solid var(--primary);
+      color: var(--primary);
+      padding: 4px;
+      border-radius: 6px;
+      font-size: 10px;
+      font-weight: 700;
+      cursor: pointer;
+      width: 100%;
+      margin-top: 6px;
+      text-align: center;
+      transition: all 0.2s ease;
+    }
+
+    .btn-small:hover {
+      background: var(--primary);
+      color: #000;
+    }
+
+    /* Buttons */
+    .btn-action {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      width: 100%;
+      padding: 12px;
+      background: linear-gradient(135deg, #25d366, #128c7e);
+      color: #fff;
+      font-weight: 800;
+      font-size: 13px;
+      border-radius: 12px;
+      text-decoration: none;
+      box-shadow: 0 8px 20px rgba(37, 211, 102, 0.25);
+      transition: all 0.3s ease;
+      cursor: pointer;
+    }
+
+    .btn-action:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 12px 25px rgba(37, 211, 102, 0.35);
+    }
+
+    /* Swiper Navigation UI */
+    .swiper-button-next, .swiper-button-prev {
+      color: var(--primary) !important;
+      transform: scale(0.5);
+    }
+
+    .swiper-pagination-bullet {
+      background: var(--text-muted) !important;
+      opacity: 0.4;
+    }
+
+    .swiper-pagination-bullet-active {
+      background: var(--primary) !important;
+      width: 20px;
+      border-radius: 6px;
+      opacity: 1;
+    }
+
+    @keyframes bounce {
+      0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
+      40% { transform: translateY(-12px); }
+      60% { transform: translateY(-6px); }
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- Audio Backsound Opick feat. Melly Goeslaw - Takdir -->
+  <audio src="audio/takdir.mp3" id="linkmp3"></audio>
+
+  <!-- Welcome Overlay Dengan Tampilan Surat Digital -->
+  <div class="overlay" id="overlay">
+    <div class="envelope-box" onclick="mulai()">
+      <i class="fa-solid fa-envelope-open-text"></i>
+    </div>
+    <h3>Dokumen Resmi & Invoice</h3>
+    <p>Ada pesan penting & lampiran rincian proyek untuk Karang Taruna RW 05 Poncol Jaya.</p>
+    <div class="click-hint" onclick="mulai()">
+      <i class="fa-solid fa-hand-pointer"></i> Ketuk Surat Untuk Membuka
+    </div>
+  </div>
+
+  <!-- Swiper Presentation -->
+  <div class="swiper mySwiper">
+    <div class="swiper-wrapper">
+
+      <!-- Slide 1: Foto & Pesan Pembuat Web -->
+      <div class="swiper-slide">
+        <div>
+          <div class="slide-badge"><i class="fa-solid fa-utensils"></i> Human Touch</div>
+          <h2 class="slide-title">Pembuat Website Butuh Makan, Minum, dan Rokok 🍛☕🚬</h2>
+        </div>
+
+        <div class="dev-photo-wrap">
+          <img src="img/pembuat-web.jpg" alt="Foto Pembuat Website">
+        </div>
+
+        <div>
+          <p class="slide-sub">Biar kodingan makin lancar, bebas <i>bug</i>, dan portal warga tetap aktif melayani 24 jam penuh!🏼</p>
+          <p class="slide-sub" style="font-size: 11px; margin-top: 6px;"><i class="fa-solid fa-arrow-right"></i> Geser untuk melihat rekam jejak pengerjaan</p>
+        </div>
+      </div>
+
+      <!-- Slide 2: Timeline Pengerjaan Proyek -->
+      <div class="swiper-slide">
+        <div>
+          <div class="slide-badge"><i class="fa-solid fa-timeline"></i> Rekam Jejak Pengerjaan</div>
+          <h2 class="slide-title">Perjalanan Dedikasi Web</h2>
+        </div>
+
+        <div class="timeline-container">
+          <div class="timeline-item">
+            <div class="timeline-date">Agustus 2025</div>
+            <div class="timeline-title">Awal Kebutuhan Web</div>
+            <div class="timeline-desc">Saat Kelurahan KunBar butuh platform digital organisasi mereka.</div>
+          </div>
+          <div class="timeline-item">
+            <div class="timeline-date">13 September 2026</div>
+            <div class="timeline-title">Tahap Koding KATARNOLIMA</div>
+            <div class="timeline-desc">Inisiatif upgrade perkembangan RW 05 & luapan kemampuan terbaik.</div>
+          </div>
+          <div class="timeline-item">
+            <div class="timeline-date">19 September 2026</div>
+            <div class="timeline-title">Finalisasi Web 90%+</div>
+            <div class="timeline-desc">Website siap rilis (Developer butuh asupan makan, rokok, & vitamin kurang tidur).</div>
+          </div>
+        </div>
+
+        <p class="slide-sub" style="font-size: 11px;"><i class="fa-solid fa-arrow-right"></i> Geser untuk standar kualitas & garansi</p>
+      </div>
+
+      <!-- Slide 3: Tech Stack & Garansi SLA -->
+      <div class="swiper-slide">
+        <div>
+          <div class="slide-badge"><i class="fa-solid fa-shield-halved"></i> Kualitas & Jaminan</div>
+          <h2 class="slide-title">Spesifikasi Kode & Garansi</h2>
+          <p class="slide-sub">Standar tinggi untuk menjamin kenyamanan akses seluruh warga RW 05.</p>
+        </div>
+
+        <div class="info-box">
+          <div class="info-row"><span class="label"><i class="fa-solid fa-gauge-high text-accent"></i> Speed Performance</span><span class="val">98% Optimized</span></div>
+          <div class="info-row"><span class="label"><i class="fa-solid fa-mobile-screen-button text-accent"></i> Responsive Layout</span><span class="val">Mobile First</span></div>
+          <div class="info-row"><span class="label"><i class="fa-solid fa-magnifying-glass text-accent"></i> SEO Ready Meta Tag</span><span class="val">Social Share Valid</span></div>
+          <div class="info-row"><span class="label"><i class="fa-solid fa-headset text-accent"></i> Garansi Maintenance</span><span class="val">30 Hari Post-Deploy</span></div>
+        </div>
+
+        <p class="slide-sub" style="font-size: 11px;">Termasuk perbaikan gratis jika ditemukan kendala teknis.</p>
+      </div>
+
+      <!-- Slide 4: Invoice, Target Pelunasan, & Options -->
+      <div class="swiper-slide">
+        <div>
+          <div class="slide-badge"><i class="fa-solid fa-file-invoice-dollar"></i> Invoice & Serah Terima</div>
+          <h2 class="slide-title">Rincian Biaya & Ketentuan</h2>
+        </div>
+
+        <div class="info-box">
+          <div class="info-row"><span class="label">Jasa Koding & Layout</span><span class="val">Rp 250.000</span></div>
+          <div class="info-row"><span class="label">Setup & Deployment</span><span class="val">Rp 50.000</span></div>
+          <div class="info-row total"><span class="label" style="color: #fff;">Total Biaya</span><span class="val">Rp 300.000</span></div>
+        </div>
+
+        <!-- Box Ketentuan Batas Pelunasan -->
+        <div class="terms-box">
+          <h4><i class="fa-solid fa-triangle-exclamation"></i> Batas Pelunasan: 23 September 2026</h4>
+          <p>Pelunasan wajib dilakukan sebelum tenggat waktu. Apabila pembayaran belum dikonfirmasi hingga batas tersebut, maka proses penyerahan akses server & pengerjaan fitur lanjutan akan ditangguhkan sementara demi menjaga kepatuhan komitmen kerja bersama.</p>
+        </div>
+
+        <!-- Grid Dua Metode Pembayaran (BCA & QRIS) -->
+        <div class="payment-grid">
+          <div class="payment-card">
+            <div>
+              <div class="payment-title"><i class="fa-solid fa-building-columns"></i> BCA</div>
+              <div class="payment-val">2100172502</div>
+              <div class="payment-sub">a/n Arjuna Mahendra</div>
+            </div>
+            <button class="btn-small" onclick="copyNorek()"><i class="fa-regular fa-copy"></i> Salin Rekening</button>
+          </div>
+
+          <div class="payment-card">
+            <div>
+              <div class="payment-title"><i class="fa-solid fa-qrcode"></i> QRIS</div>
+              <div class="payment-val" style="font-size:11px; font-family:inherit;">GoPay Merchant</div>
+              <div class="payment-sub">Arjuna Mahendra</div>
+            </div>
+            <button class="btn-small" onclick="showQris()"><i class="fa-solid fa-expand"></i> Lihat QRIS</button>
+          </div>
+        </div>
+
+        <a id="btnWA" class="btn-action" onclick="kirimWA()">
+          <i class="fa-brands fa-whatsapp"></i> Konfirmasi Pembayaran Via WA
+        </a>
+      </div>
+
+    </div>
+
+    <div class="swiper-button-next"></div>
+    <div class="swiper-button-prev"></div>
+    <div class="swiper-pagination"></div>
+  </div>
+
+  <!-- JS Dependencies -->
+  <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+  <script>
+    new Swiper(".mySwiper", {
+      pagination: {
+        el: ".swiper-pagination",
+        clickable: true,
+      },
+      navigation: {
+        nextEl: ".swiper-button-next",
+        prevEl: ".swiper-button-prev",
+      },
+    });
+
+    function mulai() {
+      const overlay = document.getElementById('overlay');
+      overlay.style.opacity = '0';
+      setTimeout(() => {
+        overlay.style.display = 'none';
+      }, 500);
+
+      const audio = document.getElementById("linkmp3");
+      audio.play().catch(() => console.log("Audio play blocked by browser"));
+
+      confetti({
+        particleCount: 80,
+        spread: 60,
+        origin: { y: 0.6 }
+      });
+    }
+
+    function copyNorek() {
+      navigator.clipboard.writeText("2100172502");
+      Swal.fire({
+        toast: true,
+        position: 'top-end',
+        icon: 'success',
+        title: 'Nomor Rekening BCA Berhasil Disalin!',
+        showConfirmButton: false,
+        timer: 2000,
+        timerProgressBar: true
+      });
+    }
+
+    function showQris() {
+      Swal.fire({
+        title: 'QRIS GoPay Merchant',
+        text: 'ARJUNA MAHENDRA, TRANSPORTASI',
+        imageUrl: 'img/qris.jpg',
+        imageWidth: 260,
+        imageAlt: 'QRIS Arjuna Mahendra',
+        background: '#0f172a',
+        color: '#fff',
+        confirmButtonColor: '#fbbf24',
+        confirmButtonText: 'Tutup'
+      });
+    }
+
+    function kirimWA() {
+      const nomorWA = "6289673580756";
+      const pesan = encodeURIComponent("Halo Humas/Pengembang KATARNOLIMA, saya telah meninjau invoice & batas pelunasan (23 September 2026) website portal RW 05. Saya sudah melakukan pembayaran ke a/n Arjuna Mahendra sebesar Rp 300.000. Berikut bukti transfernya:");
+      window.open(`https://wa.me/${nomorWA}?text=${pesan}`, '_blank');
+    }
+  </script>
+</body>
+</html>
